@@ -5,7 +5,7 @@
  *
  */
 
-void hello_simple_shell()
+void hello_simple_shell(void)
 {
 	write("hello simple shell");
 }
