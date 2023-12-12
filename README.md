@@ -1,1 +1,1 @@
-This is the simple shell project done by Iyanuoluwa Dayisi
+This is the start of my Simple Shell Project
