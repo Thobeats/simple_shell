@@ -61,7 +61,8 @@ int main(void)
 
 	while (1)
 	{
-		_prompt();
+		if (isatty(STDIN_FILENO))
+			_prompt();
 		if (getline(&command, &stream_len, stdin) == -1)
 		{
 			free(command);
