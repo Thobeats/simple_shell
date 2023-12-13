@@ -9,7 +9,6 @@
 char *_getenv(char *name)
 {
 	unsigned int i;
-	unsigned int j;
 	char *check;
 	char *token;
 

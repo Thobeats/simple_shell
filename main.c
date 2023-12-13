@@ -11,7 +11,6 @@
 void execute_command(const char *command)
 {
 	pid_t pid = fork();
-	char **path;
 	/** Tokenize the command into arguments */
 	char *args[MAX_COMMAND_LENGTH];
 	char *token = strtok((char *)command, " ");
