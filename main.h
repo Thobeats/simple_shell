@@ -13,6 +13,7 @@ void _prompt(void);
 int _strcount(char *str);
 char _strcmp(char *s1, char *s2);
 char *_string_concat(char *str1, char *str2);
+char *_getenv(char *name);
 
 
 #endif
