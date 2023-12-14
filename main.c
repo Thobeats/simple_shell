@@ -8,7 +8,7 @@
 * @command: The shell command
 */
 
-void execute_command(const char *command, char *arg)
+void execute_command(char *command, char *arg)
 {
 	pid_t pid = fork();
 	/** Tokenize the command into arguments */
@@ -35,6 +35,8 @@ void execute_command(const char *command, char *arg)
 			exit(EXIT_FAILURE);
 		}
 
+		free(command);
+
 	}
 	else
 	{
@@ -54,15 +56,20 @@ void execute_command(const char *command, char *arg)
 int main(int argc, char *argv[])
 {
 	char *command;
+	char *command_cpy;
 	size_t stream_len = 0;
+	ssize_t characters;
 	size_t command_length;
 
 	(void)argc;
+
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, "$ ", 3);
-		if (getline(&command, &stream_len, stdin) == -1)
+
+		characters = getline(&command, &stream_len, stdin);
+		if (characters == -1)
 		{
 			free(command);
 			/** Handle end of file (Ctrl+D) */
@@ -85,9 +92,20 @@ int main(int argc, char *argv[])
 		}
 
 		/** Execute the command */
-		execute_command(command, argv[0]);
+		command_cpy = malloc(sizeof(char) * characters);
+
+		if(command_cpy == NULL)
+		{
+			perror("./hsh: Memory allocation error");
+			return (-1);
+		}
+		
+		command_cpy = _strcpy(command, command_cpy);
+		execute_command(command_cpy, argv[0]);
 
 	}
+
+	free(command);
 
 	return (0);
 }
