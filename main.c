@@ -51,16 +51,19 @@ void execute_command(const char *command)
 *
 */
 
-int main(void)
+int main(int argc, char *argv[])
 {
 	char *command;
 	size_t stream_len = 0;
 	size_t command_length;
-
+	char *prgname = malloc(sizeof(char) * (_strcount(argv[0]) + 1));
+	
+	prgname = _strcpy(argv[0], prgname);
+	(void)argc;
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
-			_prompt();
+			_prompt(&prgname);
 		if (getline(&command, &stream_len, stdin) == -1)
 		{
 			free(command);
