@@ -13,7 +13,7 @@ void execute_command(char *command, char *arg)
 	pid_t pid = fork();
 	/** Tokenize the command into arguments */
 	char *args[MAX_COMMAND_LENGTH];
-	char *token = strtok((char *)command, " ");
+	char *token = strtok((char *)command, " "), *command_path;
 	int i = 0;
 
 	if (pid < 0)
@@ -28,8 +28,10 @@ void execute_command(char *command, char *arg)
 			token = strtok(NULL, " ");
 		}
 
+		command_path = get_location(command);
+
 		/** Execute the command */
-		if (execve(args[0], args, environ) == -1)
+		if (execve(command_path, args, environ) == -1)
 		{
 			perror(arg);
 			exit(EXIT_FAILURE);

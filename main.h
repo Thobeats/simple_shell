@@ -8,6 +8,8 @@ extern char **environ;
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 int _prompt(char **name);
 int _strcount(char *str);
