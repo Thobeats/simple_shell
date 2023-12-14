@@ -57,8 +57,6 @@ int main(void)
 	size_t stream_len = 0;
 	size_t command_length;
 
-	write(STDOUT_FILENO, "This is the simple shell. Type 'exit' to quit.", 45);
-
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
@@ -88,7 +86,6 @@ int main(void)
 		/** Execute the command */
 		execute_command(command);
 
-		free(command);
 	}
 
 	return (0);
