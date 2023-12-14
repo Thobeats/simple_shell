@@ -58,8 +58,8 @@ void execute_command(char *command, char *arg)
 int main(int argc, char *argv[])
 {
 	char *command, *command_cpy;
-	size_t stream_len = 0, ssize_t characters;
-	size_t command_length;
+	size_t stream_len = 0, command_length;
+	ssize_t characters;
 	(void)argc;
 
 	while (1)
