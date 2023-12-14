@@ -87,6 +87,8 @@ int main(void)
 
 		/** Execute the command */
 		execute_command(command);
+
+		free(command);
 	}
 
 	return (0);
