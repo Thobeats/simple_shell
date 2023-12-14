@@ -14,7 +14,7 @@ char *get_location(char *command)
 	int command_length, directory_length;
 	struct stat buff;
 
-	path = _getenv("PATH");
+	path = getenv("PATH");
 	if (path)
 	{
 		pathcpy = strdup(path);

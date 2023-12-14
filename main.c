@@ -13,8 +13,9 @@ void execute_command(char *command, char *arg)
 	pid_t pid = fork();
 	/** Tokenize the command into arguments */
 	char *args[MAX_COMMAND_LENGTH];
-	char *token = strtok((char *)command, " "), *command_path;
-	int i = 0;
+	char *delim = " ";
+	char *token = strtok((char *)command, delim), *command_path;
+	int i = 0, status;
 
 	if (pid < 0)
 	{
@@ -29,22 +30,19 @@ void execute_command(char *command, char *arg)
 		}
 
 		command_path = get_location(command);
-
+		printf("command path %s ", command_path);
 		/** Execute the command */
 		if (execve(command_path, args, environ) == -1)
 		{
 			perror(arg);
 			exit(EXIT_FAILURE);
 		}
-
-		free(command);
-		free(token);
-
+		free(command_path);
 	}
 	else
 	{
 		/** Parent process */
-		wait(NULL);
+		wait(&status);
 	}
 }
 
@@ -59,7 +57,7 @@ void execute_command(char *command, char *arg)
 
 int main(int argc, char *argv[])
 {
-	char *command, *command_cpy;
+	char *command, *command_cpy = NULL;
 	size_t stream_len = 0, command_length;
 	ssize_t characters;
 	(void)argc;
@@ -88,15 +86,14 @@ int main(int argc, char *argv[])
 		}
 
 		/** Execute the command */
-		command_cpy = malloc(sizeof(char) * characters);
-
+		command_cpy = _strcpy(command, command_cpy);
 		if (command_cpy == NULL)
 		{
 			perror("./hsh: Memory allocation error");
 			return (-1);
 		}
-		command_cpy = _strcpy(command, command_cpy);
 		execute_command(command_cpy, argv[0]);
+		free(command_cpy);
 	}
 	return (0);
 }
