@@ -31,7 +31,7 @@ void execute_command(const char *command)
 		/** Execute the command */
 		if (execve(args[0], args, environ) == -1)
 		{
-			perror("exec failed");
+			perror(args[0]);
 			exit(EXIT_FAILURE);
 		}
 
