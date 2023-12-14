@@ -8,7 +8,7 @@
 * @command: The shell command
 */
 
-void execute_command(const char *command)
+void execute_command(const char *command, char *arg)
 {
 	pid_t pid = fork();
 	/** Tokenize the command into arguments */
@@ -31,7 +31,7 @@ void execute_command(const char *command)
 		/** Execute the command */
 		if (execve(args[0], args, environ) == -1)
 		{
-			perror(args[0]);
+			perror(arg);
 			exit(EXIT_FAILURE);
 		}
 
@@ -56,14 +56,12 @@ int main(int argc, char *argv[])
 	char *command;
 	size_t stream_len = 0;
 	size_t command_length;
-	char *prgname = malloc(sizeof(char) * (_strcount(argv[0])));
 
-	prgname = _strcpy(argv[0], prgname);
 	(void)argc;
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
-			_prompt(&prgname);
+			write(STDOUT_FILENO, "$ ", 3);
 		if (getline(&command, &stream_len, stdin) == -1)
 		{
 			free(command);
@@ -87,7 +85,7 @@ int main(int argc, char *argv[])
 		}
 
 		/** Execute the command */
-		execute_command(command);
+		execute_command(command, argv[0]);
 
 	}
 
