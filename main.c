@@ -36,6 +36,7 @@ void execute_command(char *command, char *arg)
 		}
 
 		free(command);
+		free(token);
 
 	}
 	else
@@ -72,8 +73,6 @@ int main(int argc, char *argv[])
 		if (characters == -1)
 		{
 			free(command);
-			/** Handle end of file (Ctrl+D) */
-			write(STDOUT_FILENO, "\nExiting simple shell.\n", 24);
 			break;
 		}
 
