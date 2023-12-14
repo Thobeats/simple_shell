@@ -4,7 +4,7 @@
 
 /**
 * execute_command - Executes the command
-*
+* @arg: program name
 * @command: The shell command
 */
 
@@ -49,34 +49,29 @@ void execute_command(char *command, char *arg)
 
 /**
 * main - The Entry point of the shell
-*
+* @argc: arg count
+* @argv: arguements
 * Return: 0 on success
 *
 */
 
 int main(int argc, char *argv[])
 {
-	char *command;
-	char *command_cpy;
-	size_t stream_len = 0;
-	ssize_t characters;
+	char *command, *command_cpy;
+	size_t stream_len = 0, ssize_t characters;
 	size_t command_length;
-
 	(void)argc;
 
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, "$ ", 3);
-
 		characters = getline(&command, &stream_len, stdin);
 		if (characters == -1)
 		{
 			free(command);
 			break;
 		}
-
-		/** Remove trailing newline character */
 		command_length = _strcount(command);
 		if (command_length > 0 && command[command_length - 1] == '\n')
 		{
@@ -93,16 +88,13 @@ int main(int argc, char *argv[])
 		/** Execute the command */
 		command_cpy = malloc(sizeof(char) * characters);
 
-		if(command_cpy == NULL)
+		if (command_cpy == NULL)
 		{
 			perror("./hsh: Memory allocation error");
 			return (-1);
 		}
-		
 		command_cpy = _strcpy(command, command_cpy);
 		execute_command(command_cpy, argv[0]);
-
 	}
-
 	return (0);
 }
