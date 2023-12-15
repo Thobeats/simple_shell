@@ -38,7 +38,6 @@ void execute_command(char *command, char *arg)
 			exit(EXIT_FAILURE);
 		}
 		free(command_path);
-		free(token);
 	}
 	else
 	{
@@ -69,6 +68,7 @@ int main(int argc, char *argv[])
 		command = NULL;
 		if (getline(&command, &stream_len, stdin) == -1)
 		{
+			free(command);
 			break;
 		}
 		command_length = _strcount(command);
