@@ -32,17 +32,22 @@ void execute_command(char *command, char *arg)
 		}
 		args[i] = NULL;
 		command_path = NULL;
-		command_path = get_location(remove_space(command));
-		if (command_path != NULL)
+		command = remove_space(command);
+		if (_strcount(command) > 0)
 		{
-			/** Execute the command */
-			if (execve(command_path, args, environ) == -1)
+			command_path = get_location(command);
+			if (command_path != NULL)
 			{
-				perror(command_path);
-				exit(EXIT_FAILURE);
+				/** Execute the command */
+				if (execve(command_path, args, environ) == -1)
+				{
+					perror(command_path);
+					exit(EXIT_FAILURE);
+				}
 			}
+			free(command_path);
 		}
-		free(command_path);
+		free(command);
 	}
 	else
 	{

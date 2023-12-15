@@ -10,21 +10,17 @@
 
 char *remove_space(char *path)
 {
-	int i = 0, j = 0;
+	int i, j;
 	char *result;
 
 	if (path == NULL)
 	{
 		return (NULL);
 	}
-	/** Allocate memory for the result string */
-	result = malloc(strlen(path) + 1);
-	if (result == NULL)
-	{
-		perror("Memory allocation error");
-		exit(EXIT_FAILURE);
-	}
 
+	i = 0;
+	j = 0;
+	result = malloc(sizeof(char) * _strcount(path) + 1);
 	while (path[i] != '\0')
 	{
 		if (!isspace(path[i]))
@@ -35,7 +31,6 @@ char *remove_space(char *path)
 		i++;
 	}
 
-	/** Null-terminate the result string */
 	result[j] = '\0';
 
 	return (result);
