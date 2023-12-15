@@ -10,6 +10,7 @@ extern char **environ;
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <ctype.h>
 
 int _prompt(char **name);
 int _strcount(char *str);
@@ -18,6 +19,6 @@ char *_string_concat(char *str1, char *str2);
 char *_getenv(char *name);
 char *_strcpy(char *src, char *dest);
 char *get_location(char *command);
-
+char *remove_space(char *path);
 
 #endif

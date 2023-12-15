@@ -16,6 +16,7 @@ void execute_command(char *command, char *arg)
 	char *delim = " ";
 	char *token = strtok((char *)command, delim), *command_path;
 	int i = 0, status;
+	(void)arg;
 
 	if (pid < 0)
 	{
@@ -25,17 +26,21 @@ void execute_command(char *command, char *arg)
 	{
 		while (token != NULL)
 		{
-			args[i++] = token;
-			token = strtok(NULL, " ");
+			args[i] = token;
+			token = strtok(NULL, delim);
+			i++;
 		}
 		args[i] = NULL;
 		command_path = NULL;
 		command_path = get_location(command);
-		/** Execute the command */
-		if (execve(command_path, args, environ) == -1)
+		if (command_path != NULL)
 		{
-			perror(arg);
-			exit(EXIT_FAILURE);
+			/** Execute the command */
+			if (execve(command_path, args, environ) == -1)
+			{
+				perror(command_path);
+				exit(EXIT_FAILURE);
+			}
 		}
 		free(command_path);
 	}
