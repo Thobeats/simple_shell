@@ -14,7 +14,7 @@ void execute_command(char *command, char *arg)
 	/** Tokenize the command into arguments */
 	char *args[MAX_COMMAND_LENGTH];
 	char *delim = " ";
-	char *token = strtok((char *)command, delim), *command_path;
+	char *token = strtok((char *)command, delim);
 	int i = 0, status;
 	(void)arg;
 
@@ -31,23 +31,7 @@ void execute_command(char *command, char *arg)
 			i++;
 		}
 		args[i] = NULL;
-		command_path = NULL;
-		command = remove_space(command);
-		if (_strcount(command) > 0)
-		{
-			command_path = get_location(command);
-			if (command_path != NULL)
-			{
-				/** Execute the command */
-				if (execve(command_path, args, environ) == -1)
-				{
-					perror(command_path);
-					exit(EXIT_FAILURE);
-				}
-			}
-			free(command_path);
-		}
-		free(command);
+		handle_command(command, args);
 	}
 	else
 	{
@@ -79,7 +63,7 @@ int main(int argc, char *argv[])
 		if (getline(&command, &stream_len, stdin) == -1)
 		{
 			free(command);
-			break;
+			exit(EXIT_FAILURE);
 		}
 		command_length = _strcount(command);
 		if (command_length > 0 && command[command_length - 1] == '\n')
@@ -90,7 +74,7 @@ int main(int argc, char *argv[])
 		if (_strcmp(command, "exit") == 0)
 		{
 			write(STDOUT_FILENO, "Exiting simple shell.\n", 22);
-			break;
+			exit(EXIT_FAILURE);
 		}
 		/** Execute the command */
 		command_cpy = malloc(_strcount(command) + 1);
