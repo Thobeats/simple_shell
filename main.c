@@ -29,10 +29,8 @@ void execute_command(char *command, char *arg)
 			token = strtok(NULL, " ");
 		}
 		args[i] = NULL;
-
 		command_path = NULL;
 		command_path = get_location(command);
-		printf("command path %s ", command_path);
 		/** Execute the command */
 		if (execve(command_path, args, environ) == -1)
 		{
@@ -40,6 +38,7 @@ void execute_command(char *command, char *arg)
 			exit(EXIT_FAILURE);
 		}
 		free(command_path);
+		free(token);
 	}
 	else
 	{
@@ -61,7 +60,6 @@ int main(int argc, char *argv[])
 {
 	char *command, *command_cpy;
 	size_t stream_len = 0, command_length;
-	ssize_t characters;
 	(void)argc;
 
 	while (1)
@@ -69,8 +67,7 @@ int main(int argc, char *argv[])
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, "$ ", 3);
 		command = NULL;
-		characters = getline(&command, &stream_len, stdin);
-		if (characters == -1)
+		if (getline(&command, &stream_len, stdin) == -1)
 		{
 			break;
 		}
@@ -86,16 +83,16 @@ int main(int argc, char *argv[])
 			break;
 		}
 		/** Execute the command */
-		command_cpy = command;
+		command_cpy = malloc(_strcount(command) + 1);
 		if (command_cpy == NULL)
 		{
 			perror("./hsh: Memory allocation error");
 			return (-1);
 		}
+		strcpy(command_cpy, command);
 		execute_command(command_cpy, argv[0]);
 		free(command_cpy);
-		command = NULL;
-		stream_len = 0;
+		free(command);
 	}
 	return (0);
 }

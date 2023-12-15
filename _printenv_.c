@@ -21,7 +21,6 @@ void _printenv(void)
 	{
 		write(STDOUT_FILENO, environ[i], _strcount(environ[i]));
 		write(STDOUT_FILENO, nl, 1);
-
 		i++;
 	}
 

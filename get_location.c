@@ -24,11 +24,15 @@ char *get_location(char *command)
 		{
 			directory_length = _strcount(token);
 			filepath = malloc(directory_length + command_length + 2);
+			if (filepath == NULL)
+			{
+				perror("Memory allocation error");
+				exit(EXIT_FAILURE);
+			}
 			strcpy(filepath, token);
 			strcat(filepath, "/");
 			strcat(filepath, command);
 			strcat(filepath, "\0");
-
 			if (stat(filepath, &buff) == 0)
 			{
 				free(pathcpy);
@@ -42,10 +46,7 @@ char *get_location(char *command)
 		}
 		free(pathcpy);
 		if (stat(command, &buff) == 0)
-		{
 			return (command);
-		}
-		return (NULL);
 	}
 	return (NULL);
 }
