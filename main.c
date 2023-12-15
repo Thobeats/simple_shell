@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 		if (getline(&command, &stream_len, stdin) == -1)
 		{
 			free(command);
-			exit(EXIT_FAILURE);
+			break;
 		}
 		command_length = _strcount(command);
 		if (command_length > 0 && command[command_length - 1] == '\n')
@@ -73,7 +73,8 @@ int main(int argc, char *argv[])
 		/** Check for the exit command */
 		if (_strcmp(command, "exit") == 0)
 		{
-			exit(EXIT_FAILURE);
+			free(command);
+			exit(EXIT_SUCCESS);
 		}
 		/** Execute the command */
 		command_cpy = malloc(_strcount(command) + 1);
