@@ -32,7 +32,7 @@ void execute_command(char *command, char *arg)
 		}
 		args[i] = NULL;
 		command_path = NULL;
-		command_path = get_location(command);
+		command_path = get_location(remove_space(command));
 		if (command_path != NULL)
 		{
 			/** Execute the command */
