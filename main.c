@@ -73,7 +73,6 @@ int main(int argc, char *argv[])
 		/** Check for the exit command */
 		if (_strcmp(command, "exit") == 0)
 		{
-			write(STDOUT_FILENO, "Exiting simple shell.\n", 22);
 			exit(EXIT_FAILURE);
 		}
 		/** Execute the command */
