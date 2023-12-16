@@ -6,16 +6,17 @@
 * execute_command - Executes the command
 * @arg: program name
 * @command: The shell command
+* Return: the exit status of the command
 */
 
-void execute_command(char *command, char *arg)
+int execute_command(char *command, char *arg)
 {
 	pid_t pid = fork();
 	/** Tokenize the command into arguments */
 	char *args[MAX_COMMAND_LENGTH];
 	char *delim = " ";
 	char *token = strtok((char *)command, delim);
-	int i = 0, status;
+	int i = 0, status, exit_status = 0;
 	(void)arg;
 
 	if (pid < 0)
@@ -37,7 +38,15 @@ void execute_command(char *command, char *arg)
 	{
 		/** Parent process */
 		wait(&status);
+		waitpid(pid, &status, 0);
+
+		if (WIFEXITED(status))
+		{
+			exit_status = WEXITSTATUS(status);
+		}
 	}
+
+	return (exit_status);
 }
 
 
@@ -53,6 +62,7 @@ int main(int argc, char *argv[])
 {
 	char *command, *command_cpy;
 	size_t stream_len = 0, command_length;
+	int exit_status;
 	(void)argc;
 
 	while (1)
@@ -74,7 +84,8 @@ int main(int argc, char *argv[])
 		if (_strcmp(command, "exit") == 0)
 		{
 			free(command);
-			exit(EXIT_SUCCESS);
+			exit_status = 1;
+			break;
 		}
 		/** Execute the command */
 		command_cpy = malloc(_strcount(command) + 1);
@@ -84,9 +95,20 @@ int main(int argc, char *argv[])
 			return (-1);
 		}
 		strcpy(command_cpy, command);
-		execute_command(command_cpy, argv[0]);
+		exit_status = execute_command(command_cpy, argv[0]);
 		free(command_cpy);
 		free(command);
 	}
-	return (0);
+	return (exit_status);
+}
+
+/**
+ * exit_fnc - exit from the shell
+ *
+ * @stat_code: The status code of the last command
+ */
+
+void exit_fnc(int stat_code)
+{
+	exit(stat_code);
 }

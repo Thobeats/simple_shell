@@ -21,5 +21,6 @@ char *_strcpy(char *src, char *dest);
 char *get_location(char *command);
 char *remove_space(char *path);
 void handle_command(char *command, char **args);
+void exit_fnc(int stat_code);
 
 #endif

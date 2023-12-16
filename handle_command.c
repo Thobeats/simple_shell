@@ -24,7 +24,7 @@ void handle_command(char *command, char **args)
 			if (execve(command_path, args, environ) == -1)
 			{
 				perror(command_path);
-				exit(2);
+				exit(EXIT_FAILURE);
 			}
 		}
 		free(command_path);
